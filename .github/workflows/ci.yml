@@ -1,0 +1,30 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Récupérer le code (Checkout)
+      uses: actions/checkout@v4
+
+    - name: Configurer Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Installer les dépendances du Backend
+      run: |
+        cd backend
+        npm install
+
+    - name: Vérifier que le serveur démarre
+      run: |
+        node backend/server.js &
+        sleep 3
